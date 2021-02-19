@@ -160,7 +160,7 @@ Your console should output something similar once the stack is successfully depl
 
 After few minutes, you should receive an email looking like below:
 
-![Email](https://raw.githubusercontent.com/ippontech/blog-usa/master/images/2021/02/reddit-crawler-email.png)
+![Email](https://raw.githubusercontent.com/Falydoor/blog-usa/reddit-crawler-update/images/2021/02/reddit-crawler-email.png)
 
 Feel free to change the SNS message content in the Lambda to show more details about each post.
 
