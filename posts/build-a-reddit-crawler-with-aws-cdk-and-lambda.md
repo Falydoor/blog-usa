@@ -12,7 +12,7 @@ title: "Crawl Reddit and predict the next popular stock using AWS Lambda and CDK
 image: https://raw.githubusercontent.com/ippontech/blog-usa/master/images/2021/02/reddit-crawler-logo.png
 ---
 
-You probably heard of the recent news about Reddit and the Stock market, more precisely on what is called the [GameStop Short Squeeze](https://en.wikipedia.org/wiki/GameStop_short_squeeze). You probably asked yourself this question: "I could have made a lot of money if I predicted this price surge!" and some people actually did by being able to hop on the hype train before it was too late. Predicting the market is hard. However, you can always try to "increase" your luck by using external tools that will give you extra information.
+Predicting the stock market is not something easy and companies like [Seeking Alpha](https://seekingalpha.com/) and [The Motley Fool](https://www.fool.com/) are providing very useful resources/articles to help you make decisions. You can also "increase" your luck by using homemade tools designed to produce a more specific content that fits your needs.
 
 The goal of this blog post is to deploy a crawler for a specific [Subreddit](https://reddit.com/) that will alert you when some custom requirements are met. It might sound a bit complex at first but I will show you how simple it is by using [Amazon Web Services](https://aws.amazon.com/).
 
@@ -30,7 +30,7 @@ Here is the AWS services that we are using for this blog:
 
 # Lambda
 
-The goal of the lambda is to fetch the latest 100 posts on the subreddit [wallstreetbets](https://www.reddit.com/r/wallstreetbets/) and then filter the posts based on a custom condition. I decided to keep the posts with more than `100` comments or containing the word `GME` in the title. The idea behind this filtering is to be notified of posts having a lot of comments which usually means they are popular and worth taking a look. The other condition is to have the word `GME` in the post's title, this is to showcase that you can filter posts on their title which is perfect if you're interested in a specific subject.
+The goal of the lambda is to fetch the latest 100 posts on the subreddit [stocks](https://www.reddit.com/r/stocks/) and then filter the posts based on a custom condition. I decided to keep the posts with more than `100` comments or containing the word `AMZN` in the title. The idea behind this filtering is to be notified of posts having a lot of comments which usually means they are popular and worth taking a look. The other condition is to have the word `AMZN` in the post's title, this is to showcase that you can filter posts on their title which is perfect if you're interested in a specific stock.
 
 The Lambda below is using [Typescript](https://www.typescriptlang.org/), which is a more modern version of Javascript, to fetch the most recent 100 posts using the public API from Reddit. The posts are then filtered using the method `filterPosts` and the result is formatted in a readable message before being sent to SNS.
 
@@ -43,7 +43,7 @@ exports.handler = async function (event: any, context: any) {
         // Retrieve latest 100 posts
         let options = {
             host: 'www.reddit.com',
-            path: `/r/wallstreetbets/new.json?limit=100`,
+            path: `/r/stocks/new.json?limit=100`,
             headers: { 'User-agent': 'bot' }
         }
 
@@ -83,7 +83,7 @@ exports.handler = async function (event: any, context: any) {
 function filterPosts(posts: any) {
     return posts.data.children
         .map((child: any) => child.data)
-        .filter((post: any) => post.title.toUpperCase().includes('GME') || post.num_comments > 100)
+        .filter((post: any) => post.title.toUpperCase().includes('AMZN') || post.num_comments > 100)
 }
 ```
 
